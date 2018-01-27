@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entities;
 using Structs;
 using UnityEngine;
@@ -21,9 +22,9 @@ namespace InputSystem {
 			axisMap["MoveY"] = GamepadInput.AxisLeftStickY;
 			axisMap["AimX"] = GamepadInput.AxisRightStickX;
 			axisMap["AimY"] = GamepadInput.AxisRightStickY;
-			axisMap["Shoot"] = GamepadInput.AxisRightTrigger;
 
 			gamepadMap["Jump"] = GamepadInput.A;
+			gamepadMap["Shoot"] = GamepadInput.RB;
 			
 			keyboardMap["Jump"] = KeyCode.Space;
 			keyboardMap["Shoot"] = KeyCode.LeftShift;
@@ -80,14 +81,20 @@ namespace InputSystem {
 			return GetAxis("MoveY");
 		}
 
-		public float GetAimX(Vector3 pos) {
-			// TODO: check if KB, get mouse pos aim instead
-			return GetAxis("AimX");
+		public float GetRelativeMouseAngle(Vector3 relativePos) {
+			return Vector3.Angle(Camera.main.ScreenToWorldPoint(Input.mousePosition), relativePos);
 		}
 
-		public float GetAimY(Vector3 pos) {
-			// TODO: check if KB, get mouse pos aim instead
-			return GetAxis("AimY");
+		public float GetAimX(Vector3 playerPos) {
+			return (GetInputMode() == InputMode.Gamepad)
+				? GetAxis("AimX")
+				: Mathf.Cos(GetRelativeMouseAngle(playerPos));
+		}
+
+		public float GetAimY(Vector3 playerPos) {
+			return (GetInputMode() == InputMode.Gamepad)
+				? -GetAxis("AimY")
+				: Mathf.Sin(GetRelativeMouseAngle(playerPos));
 		}
 
 		public bool IsTryingToJump() {
@@ -95,7 +102,7 @@ namespace InputSystem {
 		}
 
 		public bool IsTryingToAttack() {
-			return GetInputMode()  == InputMode.Gamepad ? (GetGamepadAxis("Shoot") > 0) : Input.GetKey(keyboardMap["Shoot"]);
+			return GetInputMode()  == InputMode.Gamepad ? WasGamepadButtonPressed(gamepadMap["Shoot"]) : Input.GetKey(keyboardMap["Shoot"]);
 		}
 	}
 }
