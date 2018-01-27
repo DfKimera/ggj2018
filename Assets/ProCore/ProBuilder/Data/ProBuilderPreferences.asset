@@ -15,6 +15,7 @@ MonoBehaviour:
   - pbIconGUI
   - pbDefaultOpenInDockableWindow
   - pbEnableBackfaceSelection
+  - pbShowCollider
   m_Int_keys:
   - pbHandleAlignment
   - pbDefaultEditLevel
@@ -26,8 +27,8 @@ MonoBehaviour:
   m_String_keys: []
   m_Color_keys: []
   m_Material_keys: []
-  m_Bool_values: 010100
-  m_Int_values: 00000000000000000200000000000000
+  m_Bool_values: 00010101
+  m_Int_values: 01000000000000000200000000000000
   m_Float_values:
   - 0
   - 0
