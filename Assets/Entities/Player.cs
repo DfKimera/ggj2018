@@ -20,6 +20,9 @@ namespace Entities{
 	
 		public PlayerID id = PlayerID.Player1;
 
+		public PhysicMaterial noCollideMat;
+		public PhysicMaterial doCollideMat;
+
 		public string animationName = "player_idle";
 
 		public float inputX = 0;
@@ -140,6 +143,10 @@ namespace Entities{
 		private void TickCooldowns() {
 			if(attackCooldown > 0) attackCooldown--;
 			if(jumpCooldown > 0) jumpCooldown--;
+
+			if (jumpCooldown <= 0) {
+				collision.material = doCollideMat;
+			}
 		}
 
 		public void PlaySFX(AudioClip clip, float volume = 1.0f) {
@@ -162,13 +169,12 @@ namespace Entities{
 			
 			if (jumpCooldown > 0) return;
 			jumpCooldown = jumpDelay;
+
+			collision.material = noCollideMat;
 			
 			Debug.Log("---- Jump! ----");
-
-			float counterX = inputX * speed;
-			float counterZ = -inputY * speed;
 			
-			body.AddForce(new Vector3(-counterX, jumpForce, -counterZ), ForceMode.Impulse);
+			body.velocity = new Vector3(body.velocity.x, jumpForce, body.velocity.z);
 		}
 	}
 }
