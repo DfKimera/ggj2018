@@ -1,0 +1,366 @@
+fileFormatVersion: 2
+guid: 18b9030e7b21b47e7b911502713f8a7a
+timeCreated: 1517063254
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Chris
+    100002: ID101
+    100004: ID115
+    100006: ID128
+    100008: ID13
+    100010: ID141
+    100012: ID154
+    100014: ID167
+    100016: ID175
+    100018: ID188
+    100020: ID19
+    100022: ID196
+    100024: ID204
+    100026: ID217
+    100028: ID225
+    100030: ID238
+    100032: ID27
+    100034: ID33
+    100036: ID41
+    100038: ID49
+    100040: ID55
+    100042: ID61
+    100044: ID69
+    100046: ID75
+    100048: ID81
+    100050: ID87
+    100052: ID93
+    100054: instance_0
+    100056: //RootNode
+    100058: skp_camera_Last_Saved_SketchUp_View
+    100060: ID100
+    100062: ID11
+    100064: ID113
+    100066: ID121
+    100068: ID134
+    100070: ID24
+    100072: ID37
+    100074: ID50
+    100076: ID63
+    100078: ID71
+    100080: ID84
+    100082: ID92
+    400000: Chris
+    400002: ID101
+    400004: ID115
+    400006: ID128
+    400008: ID13
+    400010: ID141
+    400012: ID154
+    400014: ID167
+    400016: ID175
+    400018: ID188
+    400020: ID19
+    400022: ID196
+    400024: ID204
+    400026: ID217
+    400028: ID225
+    400030: ID238
+    400032: ID27
+    400034: ID33
+    400036: ID41
+    400038: ID49
+    400040: ID55
+    400042: ID61
+    400044: ID69
+    400046: ID75
+    400048: ID81
+    400050: ID87
+    400052: ID93
+    400054: instance_0
+    400056: //RootNode
+    400058: skp_camera_Last_Saved_SketchUp_View
+    400060: ID100
+    400062: ID11
+    400064: ID113
+    400066: ID121
+    400068: ID134
+    400070: ID24
+    400072: ID37
+    400074: ID50
+    400076: ID63
+    400078: ID71
+    400080: ID84
+    400082: ID92
+    2000000: skp_camera_Last_Saved_SketchUp_View
+    2300000: Chris
+    2300002: ID101
+    2300004: ID115
+    2300006: ID128
+    2300008: ID13
+    2300010: ID141
+    2300012: ID154
+    2300014: ID167
+    2300016: ID175
+    2300018: ID188
+    2300020: ID19
+    2300022: ID196
+    2300024: ID204
+    2300026: ID217
+    2300028: ID225
+    2300030: ID238
+    2300032: ID27
+    2300034: ID33
+    2300036: ID41
+    2300038: ID49
+    2300040: ID55
+    2300042: ID61
+    2300044: ID69
+    2300046: ID75
+    2300048: ID81
+    2300050: ID87
+    2300052: ID93
+    2300054: //RootNode
+    2300056: ID100
+    2300058: ID11
+    2300060: ID113
+    2300062: ID121
+    2300064: ID134
+    2300066: ID24
+    2300068: ID37
+    2300070: ID50
+    2300072: ID63
+    2300074: ID71
+    2300076: ID84
+    2300078: ID92
+    3300000: Chris
+    3300002: ID101
+    3300004: ID115
+    3300006: ID128
+    3300008: ID13
+    3300010: ID141
+    3300012: ID154
+    3300014: ID167
+    3300016: ID175
+    3300018: ID188
+    3300020: ID19
+    3300022: ID196
+    3300024: ID204
+    3300026: ID217
+    3300028: ID225
+    3300030: ID238
+    3300032: ID27
+    3300034: ID33
+    3300036: ID41
+    3300038: ID49
+    3300040: ID55
+    3300042: ID61
+    3300044: ID69
+    3300046: ID75
+    3300048: ID81
+    3300050: ID87
+    3300052: ID93
+    3300054: //RootNode
+    3300056: ID100
+    3300058: ID11
+    3300060: ID113
+    3300062: ID121
+    3300064: ID134
+    3300066: ID24
+    3300068: ID37
+    3300070: ID50
+    3300072: ID63
+    3300074: ID71
+    3300076: ID84
+    3300078: ID92
+    4300000: SketchUp
+    4300002: ID115
+    4300004: ID128
+    4300006: ID141
+    4300008: ID154
+    4300010: ID167
+    4300012: ID175
+    4300014: ID188
+    4300016: ID196
+    4300018: ID204
+    4300020: ID217
+    4300022: ID225
+    4300024: ID238
+    4300026: Chris
+    4300028: ID13
+    4300030: ID19
+    4300032: ID27
+    4300034: ID33
+    4300036: ID41
+    4300038: ID49
+    4300040: ID55
+    4300042: ID61
+    4300044: ID69
+    4300046: ID75
+    4300048: ID81
+    4300050: ID87
+    4300052: ID93
+    4300054: ID101
+    4300056: ID11
+    4300058: ID24
+    4300060: ID37
+    4300062: ID50
+    4300064: ID63
+    4300066: ID71
+    4300068: ID84
+    4300070: ID92
+    4300072: ID100
+    4300074: ID113
+    4300076: ID121
+    4300078: ID134
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Hair
+    second: {fileID: 2100000, guid: 07869d7724ac04aa1be41a54fc18736f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Pants
+    second: {fileID: 2100000, guid: 3a71916dca6ec4b3698148949e2b273c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Shirt
+    second: {fileID: 2100000, guid: 7dfb3ff9e00f649c9b90c6bbc50b5ac2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Shoe
+    second: {fileID: 2100000, guid: 12da6b957ed9748acb45bc6d24206af1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Shoe_Sole
+    second: {fileID: 2100000, guid: c6a922bd54c174059b36f39f4ed53919, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Skin
+    second: {fileID: 2100000, guid: a194d4eab12094f50ac7dcbfae08d3d5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Groundcover_Brick_Crushed
+    second: {fileID: 2100000, guid: d612f7ffec8f24e04aa85eee3db3f7ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Groundcover_River_Rock_4_inch
+    second: {fileID: 2100000, guid: 0d273e580432740c6ac8cc7d42ee55ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Groundcover_Rock_Crushed_Multi
+    second: {fileID: 2100000, guid: 792793ff184e34777baaae8bff76c36e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Groundcover_Sand_Smooth
+    second: {fileID: 2100000, guid: 01bcd399f7cf842e3901a02787a488f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pea_Gravel
+    second: {fileID: 2100000, guid: 8359c7044290d4446a5c8a84e8abfa6f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone_Masonry_Multi
+    second: {fileID: 2100000, guid: 95fd8e68823444324b44c9ce989594dd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vegetation_Bark_Ponderosa
+    second: {fileID: 2100000, guid: 1c0d007df30dd45b79b0ae2c947bcca5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vegetation_Grass
+    second: {fileID: 2100000, guid: add57d76d323f488686d41c9f3e38044, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material
+    second: {fileID: 2100000, guid: 58d540675a4f544a5b123762e3f2efc6, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 0
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.25
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
