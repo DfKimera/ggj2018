@@ -1,4 +1,5 @@
 ﻿using System;
+using InputSystem;
 using Structs;
 using UnityEditor;
 using UnityEngine;
@@ -8,13 +9,14 @@ namespace Entities{
 	
 	public class Player : MonoBehaviour {
 		
-		const float SPEED_FORCE_MULTIPLIER = 500f;
+		const float SPEED_FORCE_MULTIPLIER = 250f;
 		private const float MAX_AIRSPEED = 6f;
 
 		private Rigidbody body;
 		private SphereCollider radius;
 		private CapsuleCollider collision;
 		private Animator animator;
+		private InputController ctrl;
 	
 		public PlayerID id = PlayerID.Player1;
 
@@ -26,16 +28,14 @@ namespace Entities{
 		public float speed = 150.0f;
 		public float animationDeadzone = 0.05f;
 		
+		
 		public int attackCooldown = 0;
-		public int attackDelay = 5;
+		public int attackDelay = 10;
 		public float attackForce = 85.0f;
 		
 		public int jumpCooldown = 0;
-		public int jumpDelay = 10;
+		public int jumpDelay = 20;
 		public float jumpForce = 125f;
-
-		public bool tryingToAttack = false;
-		public bool tryingToJump = false;
 		
 		public int footstepsCooldown = 0;
 		public int footstepsDelay = 8;
@@ -50,6 +50,7 @@ namespace Entities{
 			body = GetComponent<Rigidbody>();
 			collision = GetComponent<CapsuleCollider>();
 			animator = GetComponentInChildren<Animator>();
+			ctrl = GetComponent<InputController>();
 			//match = GameObject.FindWithTag("GameController").GetComponent<MatchController>();
 		}
 	
@@ -58,11 +59,11 @@ namespace Entities{
 		
 			CheckInputs();
 			
-			if (tryingToAttack) {
+			if (ctrl.IsTryingToAttack()) {
 				Attack();
 			}
 			
-			if (tryingToJump) {
+			if (ctrl.IsTryingToJump()) {
 				Jump();
 			}
 			
@@ -77,24 +78,10 @@ namespace Entities{
 		private bool IsActive() {
 			return true;
 		}
-	
-		private string GetPlayerPrefix() {
-			switch (id) {
-				default: case PlayerID.Player1: return "P1";
-				case PlayerID.Player2: return "P2";
-			}
-		}
 
 		private void CheckInputs() {
-
-			inputX = (Input.GetAxis(GetPlayerPrefix() + "_Move_Horizontal") + Input.GetAxis(GetPlayerPrefix() + "_Move_KBHorizontal")) / 2;
-			inputY = (Input.GetAxis(GetPlayerPrefix() + "_Move_Vertical") + Input.GetAxis(GetPlayerPrefix() + "_Move_KBVertical")) / 2;
-
-			tryingToAttack = Input.GetButtonDown(GetPlayerPrefix() + "_Attack");
-			tryingToJump = Input.GetButtonDown(GetPlayerPrefix() + "_Jump");
-			
-			//Debug.Log("x=" + inputX + ", y=" + inputY + ", jump=" + tryingToJump);
-		
+			inputX = ctrl.GetMoveX();
+			inputY = ctrl.GetMoveY();
 		}
 
 		private void HandleMovement() {
@@ -146,7 +133,7 @@ namespace Entities{
 			if (body.velocity.z < -animationDeadzone && body.velocity.z < body.velocity.x) animationName = "move_down";
 			if (body.velocity.z > animationDeadzone && body.velocity.z > body.velocity.x) animationName = "move_up";
 
-			animator.Play(GetPlayerPrefix() + "_" + animationName);
+			animator.Play(animationName);
 
 		}
 

@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 54926852932932940}
   - component: {fileID: 136111967972382118}
   - component: {fileID: 114014402214252704}
+  - component: {fileID: 114008414727953890}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Untagged
@@ -105,6 +106,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114008414727953890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1360292400421744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc88427f2a741b1b55dd3640ca764e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 1
+  inputMode: 1
 --- !u!114 &114014402214252704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -123,13 +137,11 @@ MonoBehaviour:
   speed: 150
   animationDeadzone: 0.05
   attackCooldown: 0
-  attackDelay: 5
+  attackDelay: 10
   attackForce: 85
   jumpCooldown: 0
-  jumpDelay: 10
-  jumpForce: 150
-  tryingToAttack: 0
-  tryingToJump: 0
+  jumpDelay: 20
+  jumpForce: 125
   footstepsCooldown: 0
   footstepsDelay: 8
   sfxFootsteps: []
