@@ -6,6 +6,7 @@ TagManager:
   tags:
   - UIEventSystem
   - Enemy
+  - MatchController
   layers:
   - Default
   - TransparentFX
