@@ -27,9 +27,11 @@ namespace InputSystem {
 
 			gamepadMap["Jump"] = GamepadInput.A;
 			gamepadMap["Shoot"] = GamepadInput.RB;
+			gamepadMap["Interact"] = GamepadInput.B;
 			
 			keyboardMap["Jump"] = KeyCode.Space;
-			keyboardMap["Shoot"] = KeyCode.LeftShift;
+			keyboardMap["Shoot"] = KeyCode.Mouse0;
+			keyboardMap["Interact"] = KeyCode.LeftShift;
 
 			bool isWindows = (Application.platform == RuntimePlatform.WindowsPlayer ||
 			                  Application.platform == RuntimePlatform.WindowsEditor); 
@@ -52,8 +54,7 @@ namespace InputSystem {
 		
 
 		private InputMode GetInputMode() {
-			return inputMode; // TODO: load from settings
-			//return PlayerSettings.GetInputMode(playerID);
+			return PlayerSettings.GetInputMode(playerID);
 		}
 
 		private int GetPlayerGamepad() {
@@ -117,6 +118,10 @@ namespace InputSystem {
 
 		public bool IsTryingToAttack() {
 			return GetInputMode()  == InputMode.Gamepad ? WasGamepadButtonPressed(gamepadMap["Shoot"]) : Input.GetKey(keyboardMap["Shoot"]);
+		}
+
+		public bool IsTryingToInteract() {
+			return GetInputMode()  == InputMode.Gamepad ? WasGamepadButtonPressed(gamepadMap["Interact"]) : Input.GetKey(keyboardMap["Interact"]);
 		}
 	}
 }

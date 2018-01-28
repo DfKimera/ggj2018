@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Controllers;
 using InputSystem;
 using Structs;
 using UnityEditor;
 using UnityEngine;
+using PlayerSettings = Structs.PlayerSettings;
 using Random = UnityEngine.Random;
 
 namespace Entities{
@@ -11,6 +13,7 @@ namespace Entities{
 	public class Player : MonoBehaviour {
 
 		public static List<Player> All = new List<Player>();
+		public static Dictionary<PlayerID, Player> ByID = new Dictionary<PlayerID, Player>();
 		
 		private const float SPEED_FORCE_MULTIPLIER = 500f;
 		private const float MAX_SPEED = 3.2f;
@@ -21,6 +24,7 @@ namespace Entities{
 		private CapsuleCollider collision;
 		private Animator animator;
 		private InputController ctrl;
+		private SpriteRenderer sprite;
 	
 		public PlayerID id = PlayerID.Player1;
 
@@ -28,7 +32,13 @@ namespace Entities{
 		public PhysicMaterial doCollideMat;
 		public GameObject bulletPrefab;
 
-		public string animationName = "player_idle";
+		public string animationSequence = "idle";
+		public string animationDirection = "down";
+		
+		public Vector3 startPosition;
+		
+		public bool canUseAntenna = false;
+		public AntennaTower nearbyAntenna;
 
 		public int health = 100;
 		public int maxHealth = 100;
@@ -55,19 +65,33 @@ namespace Entities{
 
 		public AudioClip[] sfxFootsteps;
 		public AudioClip sfxAttack;
+
+		public MatchController match;
 	
 		protected void Start () {
 			body = GetComponent<Rigidbody>();
 			collision = GetComponent<CapsuleCollider>();
 			animator = GetComponentInChildren<Animator>();
 			ctrl = GetComponent<InputController>();
-
+			sprite = GetComponentInChildren<SpriteRenderer>();
+			
 			health = maxHealth;
-			//match = GameObject.FindWithTag("GameController").GetComponent<MatchController>();
+			match = MatchController.GetInstance();
 		}
 	
 		protected void Update () {
-			if (!IsActive()) return;
+			if (!IsActive()) {
+				sprite.enabled = false;
+				collision.enabled = false;
+				body.isKinematic = true;
+				return;
+			}
+
+			sprite.enabled = true;
+			collision.enabled = true;
+			body.isKinematic = false;
+			
+			if (!IsAlive()) return;
 		
 			CheckInputs();
 			
@@ -78,25 +102,49 @@ namespace Entities{
 			if (ctrl.IsTryingToJump()) {
 				Jump();
 			}
+
+			if (ctrl.IsTryingToInteract() && canUseAntenna && !nearbyAntenna.isAntennaOn) {
+				nearbyAntenna.TurnOn(this);
+			}
 			
 			HandleMovement();
 			HandleMaxSpeed();
 			HandleFootsteps();
-			//HandleAnimations();
+			HandleAnimations();
 			
 			TickCooldowns();
 		}
 
 		private void OnEnable() {
+			startPosition = transform.position;
 			All.Add(this);
+			ByID[this.id] = this;
 		}
 
 		private void OnDisable() {
 			All.Remove(this);
+			ByID.Remove(this.id);
 		}
 
-		private bool IsActive() {
+		public bool IsActive() {
+			if (!match.HasMatchStarted) return false;
+			if (match.IsGameOver) return false;
+			if (id == PlayerID.Player2 && PlayerSettings.GetInputMode(PlayerID.Player2) == InputMode.Disconnected) return false;
+			return true;
+		}
+		
+		public bool IsAlive() {
 			return (health > 0);
+		}
+
+		public void ResetToStart() {
+			transform.position = startPosition;
+			body.velocity = Vector3.zero;
+			
+			health = maxHealth;
+			
+			canUseAntenna = false;
+			nearbyAntenna = null;
 		}
 
 		private void CheckInputs() {
@@ -116,9 +164,6 @@ namespace Entities{
 		}
 
 		private void HandleMaxSpeed() {
-			
-			
-		
 			body.velocity = new Vector3(
 				Mathf.Clamp(body.velocity.x, -MAX_SPEED, MAX_SPEED),
 				Mathf.Clamp(body.velocity.y, -MAX_AIRSPEED, MAX_AIRSPEED),
@@ -149,15 +194,34 @@ namespace Entities{
 
 		private void HandleAnimations() {
 
-			animationName = "idle_down";
+			animationSequence = "idle";
 			
 			bool isAttacking = (attackCooldown > (attackDelay - 15));
 
-			if (body.velocity.x > animationDeadzone) animationName = "move_right";
-			if (body.velocity.x < -animationDeadzone) animationName = "move_left";
-			if (body.velocity.z < -animationDeadzone && body.velocity.z < body.velocity.x) animationName = "move_down";
-			if (body.velocity.z > animationDeadzone && body.velocity.z > body.velocity.x) animationName = "move_up";
+			if (body.velocity.x > animationDeadzone) {
+				animationSequence = "walk";
+				animationDirection = "right";
+			}
 
+			if (body.velocity.x < -animationDeadzone) {
+				animationSequence = "walk";
+				animationDirection = "left";
+			}
+			if (body.velocity.z < -animationDeadzone && body.velocity.z < body.velocity.x) {
+				animationSequence = "walk";
+				animationDirection = "down";
+			}
+			if (body.velocity.z > animationDeadzone && body.velocity.z > body.velocity.x) {
+				animationSequence = "walk";
+				animationDirection = "up";
+			}
+
+			if (isAttacking) {
+				//animationSequence = "attack";
+			}
+
+			string animationName = "flan_" + animationSequence + "_" + animationDirection;
+			
 			animator.Play(animationName);
 
 		}
@@ -194,9 +258,18 @@ namespace Entities{
 
 		public void ApplyDamage(int damage) {
 			health -= damage;
-			if (health < 0) {
+			
+			// TODO: hurt sfx
+
+			Debug.Log("Player " + this.id + " sustained damage: " + damage);
+			
+			if (health <= 0) {
 				health = 0;
-				// TODO: process death
+				
+				Debug.Log("Player " + this.id + " has died!");
+				match.OnPlayerDeath(this);
+				
+				// TODO: death SFX
 			}
 			
 		}
