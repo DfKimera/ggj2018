@@ -16,36 +16,29 @@ public class FieldOfView : MonoBehaviour {
 	[HideInInspector]
 	public List<Transform> visibleTargets = new List<Transform>();
 
-	private int alertTick;
+	private float alertTick;
 	protected void Start() {
 		body = GetComponent<Rigidbody>();
 
 		Debug.Log("START!");
 		StartCoroutine("FindTargetsWithDelay", .3f);
-		FindVisibleTargets();
-	}
-
-	protected void Update() {
-		if (alertTick < 1) {
-			isAlert = false;
-		}
 	}
 	private void setAlert(bool status = true) {
 
 		Debug.Log("ALERT SETTED.");
 		if (isAlert && status) {
 			Shoot();
+			alertTick = 8;
 			return;
 		}
 
 		alertTick = 4;
 		isAlert = true;
-		body.velocity = new Vector3(0, 2f, 0);
+		body.velocity = new Vector3(0, 2.5f, 0);
 	}
-	IEnumerable FindTargetsWithDelay(float delay) {
+	IEnumerator FindTargetsWithDelay(float delay) {
 		while(true) {
 			yield return new WaitForSeconds(delay);
-			Debug.Log("TARGETS SCAN.");
 			FindVisibleTargets();
 		}
 	}
@@ -69,7 +62,7 @@ public class FieldOfView : MonoBehaviour {
 			}
 		}
 
-		alertTick--;
+		alertTick = -Time.deltaTime;
 		if (visibleTargets.Count != 0) {
 			setAlert();
 		}
