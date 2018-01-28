@@ -10,68 +10,120 @@ public class FieldOfView : MonoBehaviour {
 	public LayerMask targetMask;
 	public LayerMask obstacleMask;
 
-	private bool isAlert = false;
 	private Rigidbody body;
 
 	[HideInInspector]
-	public List<Transform> visibleTargets = new List<Transform>();
+	public Transform targetVisible;
+
+	public int initialAlertTick;
 
 	private int alertTick;
+
+	private bool isAlert;
+
+	private bool isBloodInTheEyes;
+
+	private Quaternion quaternionOrigin;
 	protected void Start() {
 		body = GetComponent<Rigidbody>();
-
-		Debug.Log("START!");
+		isAlert = false;
+		quaternionOrigin = transform.rotation;
 		StartCoroutine("FindTargetsWithDelay", .3f);
-		FindVisibleTargets();
 	}
-
-	protected void Update() {
-		if (alertTick < 1) {
-			isAlert = false;
-		}
-	}
-	private void setAlert(bool status = true) {
-
-		Debug.Log("ALERT SETTED.");
-		if (isAlert && status) {
-			Shoot();
-			return;
-		}
-
-		alertTick = 4;
-		isAlert = true;
-		body.velocity = new Vector3(0, 2f, 0);
-	}
-	IEnumerable FindTargetsWithDelay(float delay) {
+	IEnumerator FindTargetsWithDelay(float delay) {
 		while(true) {
 			yield return new WaitForSeconds(delay);
-			Debug.Log("TARGETS SCAN.");
-			FindVisibleTargets();
+
+			FindVisibleTarget();
+			ShootIfIsFocused();
+			FocusTargetIfIsVisible();
+			AlertTickCount();
 		}
 	}
 
-	void Shoot() {
+	void Update() {
+		if (targetVisible != null) {
+			RotateToTarget();
+			return;
+		}
+		if (alertTick <= initialAlertTick/4) {
+			StartCoroutine("rotateToOrigin");
+		}
+	}
+
+	void setHardState() {
+		isBloodInTheEyes = true;
+		alertTick = alertTick*5;
+		//StartCoroutine("bloodInTheEyes");
+	}
+
+	IEnumerator bloodInTheEyes() {
+		var toLeft = true;
+		var count = 5;
+		while(true) {
+			yield return new WaitForSeconds(.1f);
+			if (targetVisible == null) continue;
+			if (toLeft) {
+				transform.eulerAngles = new Vector3(transform.eulerAngles.x+10, transform.eulerAngles.y, transform.eulerAngles.z+10);
+			} else {
+				transform.eulerAngles = new Vector3(transform.eulerAngles.x-10, transform.eulerAngles.y, transform.eulerAngles.z-10);
+			}
+			count--;
+			if (count < 1) toLeft = !toLeft;
+		}
+	}
+
+	IEnumerator rotateToOrigin() {
+		while(targetVisible == null && transform.rotation != quaternionOrigin) {
+			yield return new WaitForSeconds(.1f);
+			transform.rotation = Quaternion.Slerp(transform.rotation, quaternionOrigin, Time.deltaTime * 5f);
+		}
+	}
+	void RotateToTarget() {
+		var targetPoint = new Vector3(targetVisible.transform.position.x, targetVisible.transform.position.y, targetVisible.transform.position.z) - transform.position;
+		var targetRotation = Quaternion.LookRotation(targetPoint, Vector3.up);
+		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 15f);
+	}
+
+	void ShootIfIsFocused() {
+		if (targetVisible == null || !isAlert) return;
+
+		setHardState();
 		Debug.Log("SHOOT!");
 	}
-	void FindVisibleTargets() {
-		visibleTargets.Clear();
+
+	void FocusTargetIfIsVisible() {
+		if (targetVisible == null) return;
+		if (isAlert) return;
+
+		body.velocity = new Vector3(0, 3f, 0);
+		alertTick = initialAlertTick;
+		isAlert = true;
+	}
+
+	void AlertTickCount() {
+		if (!isAlert) return;
+		if (targetVisible == null) alertTick--;
+
+		if (alertTick < initialAlertTick/4) isBloodInTheEyes = false;
+		if (alertTick < 0) isAlert = false;
+		
+		alertTick--;
+	}
+
+	void FindVisibleTarget() {
+		targetVisible = null;
 		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
-		for (int i =0; i < targetsInViewRadius.Length ; i++) {
+		for (var i = 0 ; targetsInViewRadius.Length > i ; i++) {
 			Transform target = targetsInViewRadius [i].transform;
 			Vector3 dirToTarget = (target.position - transform.position).normalized;
-			if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2) {
-				float dstToTarget = Vector3.Distance(transform.position, target.position);
+			float dstToTarget = Vector3.Distance(transform.position, target.position);
 
-				if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) {
-					visibleTargets.Add(target);
-				}
-			}
-		}
-
-		alertTick--;
-		if (visibleTargets.Count != 0) {
-			setAlert();
+			if (Vector3.Angle(transform.forward, dirToTarget) >= viewAngle / 2) continue;
+			if (Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) continue;
+			targetVisible = target;
+			break;
 		}
 	}
 	public Vector3 DirFromAngle(float angleInDegrees, bool angleIsGlobal) {
