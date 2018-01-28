@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using InputSystem;
 using Structs;
 using UnityEditor;
@@ -8,8 +9,11 @@ using Random = UnityEngine.Random;
 namespace Entities{
 	
 	public class Player : MonoBehaviour {
+
+		public static List<Player> All = new List<Player>();
 		
-		private const float SPEED_FORCE_MULTIPLIER = 250f;
+		private const float SPEED_FORCE_MULTIPLIER = 500f;
+		private const float MAX_SPEED = 3.2f;
 		private const float MAX_AIRSPEED = 6f;
 
 		private Rigidbody body;
@@ -26,6 +30,9 @@ namespace Entities{
 
 		public string animationName = "player_idle";
 
+		public int health = 100;
+		public int maxHealth = 100;
+
 		public float moveX = 0;
 		public float moveY = 0;
 		
@@ -34,7 +41,6 @@ namespace Entities{
 		
 		public float speed = 150.0f;
 		public float animationDeadzone = 0.05f;
-		
 		
 		public int attackCooldown = 0;
 		public int attackDelay = 10;
@@ -49,15 +55,14 @@ namespace Entities{
 
 		public AudioClip[] sfxFootsteps;
 		public AudioClip sfxAttack;
-		public AudioClip sfxStunned;
-		public AudioClip sfxPickBlock;
-		public AudioClip sfxDropBlock;
 	
 		protected void Start () {
 			body = GetComponent<Rigidbody>();
 			collision = GetComponent<CapsuleCollider>();
 			animator = GetComponentInChildren<Animator>();
 			ctrl = GetComponent<InputController>();
+
+			health = maxHealth;
 			//match = GameObject.FindWithTag("GameController").GetComponent<MatchController>();
 		}
 	
@@ -82,8 +87,16 @@ namespace Entities{
 			TickCooldowns();
 		}
 
+		private void OnEnable() {
+			All.Add(this);
+		}
+
+		private void OnDisable() {
+			All.Remove(this);
+		}
+
 		private bool IsActive() {
-			return true;
+			return (health > 0);
 		}
 
 		private void CheckInputs() {
@@ -103,11 +116,13 @@ namespace Entities{
 		}
 
 		private void HandleMaxSpeed() {
+			
+			
 		
 			body.velocity = new Vector3(
-				Mathf.Clamp(body.velocity.x, -MAX_AIRSPEED, MAX_AIRSPEED),
+				Mathf.Clamp(body.velocity.x, -MAX_SPEED, MAX_SPEED),
 				Mathf.Clamp(body.velocity.y, -MAX_AIRSPEED, MAX_AIRSPEED),
-				Mathf.Clamp(body.velocity.z, -MAX_AIRSPEED, MAX_AIRSPEED)
+				Mathf.Clamp(body.velocity.z, -MAX_SPEED, MAX_SPEED)
 			);
 		}
 
@@ -166,7 +181,7 @@ namespace Entities{
 			
 			attackCooldown = attackDelay;
 			
-			//PlaySFX(sfxAttack);
+			PlaySFX(sfxAttack);
 
 			GameObject bullet = Instantiate(bulletPrefab, body.position, body.rotation);
 			Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
@@ -175,6 +190,15 @@ namespace Entities{
 			
 			Debug.DrawRay(body.position, new Vector3(aimX, 0, aimY), Color.blue, 5);
 
+		}
+
+		public void ApplyDamage(int damage) {
+			health -= damage;
+			if (health < 0) {
+				health = 0;
+				// TODO: process death
+			}
+			
 		}
 
 		public void Jump() {

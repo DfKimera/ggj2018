@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 1
   inputMode: 1
+  mousePosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114014402214252704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,24 +132,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  noCollideMat: {fileID: 13400000, guid: e9ba7d4603d314d358af0287a1081c73, type: 2}
+  doCollideMat: {fileID: 13400000, guid: d8aa2f9793b5a483fa894be606f57fae, type: 2}
+  bulletPrefab: {fileID: 1484898494705730, guid: b07acc2f8122d46e2b18f5ad7b2c6c03,
+    type: 2}
   animationName: player_idle
-  inputX: 0
-  inputY: 0
+  health: 100
+  maxHealth: 100
+  moveX: 0
+  moveY: 0
+  aimX: 0
+  aimY: 0
   speed: 150
   animationDeadzone: 0.05
   attackCooldown: 0
   attackDelay: 10
   attackForce: 85
   jumpCooldown: 0
-  jumpDelay: 20
-  jumpForce: 125
+  jumpDelay: 40
+  jumpForce: 85
   footstepsCooldown: 0
   footstepsDelay: 8
   sfxFootsteps: []
-  sfxAttack: {fileID: 0}
-  sfxStunned: {fileID: 0}
-  sfxPickBlock: {fileID: 0}
-  sfxDropBlock: {fileID: 0}
+  sfxAttack: {fileID: 8300000, guid: 0d841f6d6c79d4c77b4d75a3cb00bdcd, type: 3}
 --- !u!136 &136111967972382118
 CapsuleCollider:
   m_ObjectHideFlags: 1
