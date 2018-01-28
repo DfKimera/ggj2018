@@ -32,7 +32,9 @@ namespace Entities{
 		public PhysicMaterial doCollideMat;
 		public GameObject bulletPrefab;
 
-		public string animationName = "player_idle";
+		public string animationSequence = "idle";
+		public string animationDirection = "down";
+		
 		public Vector3 startPosition;
 
 		public int health = 100;
@@ -101,7 +103,7 @@ namespace Entities{
 			HandleMovement();
 			HandleMaxSpeed();
 			HandleFootsteps();
-			//HandleAnimations();
+			HandleAnimations();
 			
 			TickCooldowns();
 		}
@@ -180,15 +182,34 @@ namespace Entities{
 
 		private void HandleAnimations() {
 
-			animationName = "idle_down";
+			animationSequence = "idle";
 			
 			bool isAttacking = (attackCooldown > (attackDelay - 15));
 
-			if (body.velocity.x > animationDeadzone) animationName = "move_right";
-			if (body.velocity.x < -animationDeadzone) animationName = "move_left";
-			if (body.velocity.z < -animationDeadzone && body.velocity.z < body.velocity.x) animationName = "move_down";
-			if (body.velocity.z > animationDeadzone && body.velocity.z > body.velocity.x) animationName = "move_up";
+			if (body.velocity.x > animationDeadzone) {
+				animationSequence = "walk";
+				animationDirection = "right";
+			}
 
+			if (body.velocity.x < -animationDeadzone) {
+				animationSequence = "walk";
+				animationDirection = "left";
+			}
+			if (body.velocity.z < -animationDeadzone && body.velocity.z < body.velocity.x) {
+				animationSequence = "walk";
+				animationDirection = "down";
+			}
+			if (body.velocity.z > animationDeadzone && body.velocity.z > body.velocity.x) {
+				animationSequence = "walk";
+				animationDirection = "up";
+			}
+
+			if (isAttacking) {
+				//animationSequence = "attack";
+			}
+
+			string animationName = "flan_" + animationSequence + "_" + animationDirection;
+			
 			animator.Play(animationName);
 
 		}
