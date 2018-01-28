@@ -149,7 +149,7 @@ TrailRenderer:
     alignment: 0
     textureMode: 0
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0
   m_Autodestruct: 1
 --- !u!114 &114080931473821782
 MonoBehaviour:
@@ -162,8 +162,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb0cdb9db6e42433eb66710fac9298ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  speed: 40
+  maxLifetime: 100
+  teamID: 0
   lifetime: 0
+  bounce: 0
 --- !u!135 &135589934889263132
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -174,5 +177,5 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.02
   m_Center: {x: 0, y: 0, z: 0}

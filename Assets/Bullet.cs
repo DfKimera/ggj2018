@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 	
-	public float speed = 50f;
+	public float speed = 40f;
 	public int maxLifetime = 100;
 
 	public TeamID teamID;
@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour {
 	public void OnCollisionEnter(Collision collision) {
 		
 		if (collision.gameObject.CompareTag("Player") && teamID == TeamID.Player) return;
-		if (collision.gameObject.CompareTag("Enemies") && teamID == TeamID.Enemy) return;
+		if (collision.gameObject.CompareTag("Enemy") && teamID == TeamID.Enemy) return;
 		
 		if(!bounce) Destroy(gameObject);
 	}

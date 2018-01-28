@@ -44,8 +44,9 @@ namespace InputSystem {
 			RaycastHit hit;
 
 			if (!Physics.Raycast(ray, out hit)) return;
-			
+
 			mousePosition = hit.point;
+			
 			Debug.DrawRay(mousePosition, Vector3.up, Color.red);
 		}
 		

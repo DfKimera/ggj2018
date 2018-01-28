@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - UIEventSystem
+  - Enemy
   layers:
   - Default
   - TransparentFX
