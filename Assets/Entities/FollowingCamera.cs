@@ -8,7 +8,10 @@ namespace Entities {
 
 		public void Update() {
 			
-			transform.position = new Vector3(player1.transform.position.x, transform.position.y, player1.transform.position.z - 5f);
+			transform.position = new Vector3(
+				transform.position.x, 
+				player1.transform.position.y + 15f, 
+				player1.transform.position.z - 8.5f);
 			
 		}
 		
