@@ -36,6 +36,9 @@ namespace Entities{
 		public string animationDirection = "down";
 		
 		public Vector3 startPosition;
+		
+		public bool canUseAntenna = false;
+		public AntennaTower nearbyAntenna;
 
 		public int health = 100;
 		public int maxHealth = 100;
@@ -99,6 +102,10 @@ namespace Entities{
 			if (ctrl.IsTryingToJump()) {
 				Jump();
 			}
+
+			if (ctrl.IsTryingToInteract() && canUseAntenna && !nearbyAntenna.isAntennaOn) {
+				nearbyAntenna.TurnOn(this);
+			}
 			
 			HandleMovement();
 			HandleMaxSpeed();
@@ -132,7 +139,12 @@ namespace Entities{
 
 		public void ResetToStart() {
 			transform.position = startPosition;
+			body.velocity = Vector3.zero;
+			
 			health = maxHealth;
+			
+			canUseAntenna = false;
+			nearbyAntenna = null;
 		}
 
 		private void CheckInputs() {

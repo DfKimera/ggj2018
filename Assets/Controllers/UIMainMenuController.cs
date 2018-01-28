@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Controllers {
-	public class MenuController : MonoBehaviour {
+	public class UIMainMenuController : MonoBehaviour {
 
 		public InputMode P1Mode = InputMode.Keyboard;
 		public InputMode P2Mode = InputMode.Disconnected;
