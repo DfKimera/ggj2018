@@ -51,7 +51,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1484898494705730}
   serializedVersion: 2
-  m_Mass: 2
+  m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
@@ -203,7 +203,13 @@ MonoBehaviour:
   maxLifetime: 100
   teamID: 0
   lifetime: 0
+  damage: 10
   bounce: 0
+  sfxBulletHit:
+  - {fileID: 8300000, guid: defed8dab266140f79a249353d9d156b, type: 3}
+  - {fileID: 8300000, guid: 29fd8c75bf3f54f5296ba88fb043f8b2, type: 3}
+  - {fileID: 8300000, guid: 471291b16d16e4dcd986d06353497f63, type: 3}
+  - {fileID: 8300000, guid: b02ec6eb35e584536a07fc58d666bda7, type: 3}
 --- !u!135 &135589934889263132
 SphereCollider:
   m_ObjectHideFlags: 1
