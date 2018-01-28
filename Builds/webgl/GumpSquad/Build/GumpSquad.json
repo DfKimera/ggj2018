@@ -1,0 +1,13 @@
+{
+"companyName": "A3 Studios",
+"productName": "Gump Squad",
+"dataUrl": "GumpSquad.data.unityweb",
+"asmCodeUrl": "GumpSquad.asm.code.unityweb",
+"asmMemoryUrl": "GumpSquad.asm.memory.unityweb",
+"asmFrameworkUrl": "GumpSquad.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
