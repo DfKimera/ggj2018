@@ -9,7 +9,7 @@ namespace Entities{
 	
 	public class Player : MonoBehaviour {
 		
-		const float SPEED_FORCE_MULTIPLIER = 250f;
+		private const float SPEED_FORCE_MULTIPLIER = 250f;
 		private const float MAX_AIRSPEED = 6f;
 
 		private Rigidbody body;
@@ -22,11 +22,15 @@ namespace Entities{
 
 		public PhysicMaterial noCollideMat;
 		public PhysicMaterial doCollideMat;
+		public GameObject bulletPrefab;
 
 		public string animationName = "player_idle";
 
-		public float inputX = 0;
-		public float inputY = 0;
+		public float moveX = 0;
+		public float moveY = 0;
+		
+		public float aimX = 0;
+		public float aimY = 0;
 		
 		public float speed = 150.0f;
 		public float animationDeadzone = 0.05f;
@@ -83,15 +87,18 @@ namespace Entities{
 		}
 
 		private void CheckInputs() {
-			inputX = ctrl.GetMoveX();
-			inputY = ctrl.GetMoveY();
+			moveX = ctrl.GetMoveX();
+			moveY = ctrl.GetMoveY();
+			
+			aimX = ctrl.GetAimX(transform.position);
+			aimY = ctrl.GetAimY(transform.position);
 		}
 
 		private void HandleMovement() {
 			body.AddForce(new Vector3(
-				inputX * speed * Time.fixedDeltaTime * SPEED_FORCE_MULTIPLIER, 
+				moveX * speed * Time.fixedDeltaTime * SPEED_FORCE_MULTIPLIER, 
 				0, 
-				-inputY * speed * Time.fixedDeltaTime * SPEED_FORCE_MULTIPLIER), ForceMode.Force
+				-moveY * speed * Time.fixedDeltaTime * SPEED_FORCE_MULTIPLIER), ForceMode.Force
 			);
 		}
 
@@ -114,15 +121,15 @@ namespace Entities{
 				footstepsCooldown--;
 			}
 
-			bool isTryingToMove = inputX != 0 || inputY != 0;
+			bool isTryingToMove = moveX != 0 || moveY != 0;
 
-			if (isTryingToMove && footstepsCooldown <= 0) {
-				AudioClip footstepClip = sfxFootsteps[Random.Range(0, sfxFootsteps.Length - 1)];
+			if (!isTryingToMove || footstepsCooldown > 0) return;
+			
+			AudioClip footstepClip = sfxFootsteps[Random.Range(0, sfxFootsteps.Length - 1)];
 				
-				PlaySFX(footstepClip, 0.3f);
+			PlaySFX(footstepClip, 0.3f);
 				
-				footstepsCooldown = footstepsDelay;
-			}
+			footstepsCooldown = footstepsDelay;
 		}
 
 		private void HandleAnimations() {
@@ -158,11 +165,16 @@ namespace Entities{
 			if (attackCooldown > 0) return;
 			
 			attackCooldown = attackDelay;
+			
+			//PlaySFX(sfxAttack);
 
-			PlaySFX(sfxAttack);
+			GameObject bullet = Instantiate(bulletPrefab, body.position, body.rotation);
+			Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
+
+			bullet.GetComponent<Bullet>().Fire(transform.position, aimX, aimY, TeamID.Player);
 			
-			// TODO: fire weapon
-			
+			Debug.DrawRay(body.position, new Vector3(aimX, 0, aimY), Color.blue, 5);
+
 		}
 
 		public void Jump() {
