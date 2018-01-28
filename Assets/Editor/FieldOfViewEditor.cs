@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using Entities;
 
 [CustomEditor (typeof (FieldOfView))]
 public class FieldOfViewEditor : Editor {
@@ -16,8 +17,8 @@ public class FieldOfViewEditor : Editor {
 		Handles.DrawLine(fow.transform.position, fow.transform.position + viewAngleB * fow.viewRadius);
 
 		Handles.color = Color.red;
-		if (fow.targetVisible != null) {
-			Handles.DrawLine(fow.transform.position, fow.targetVisible.position);
+		if (fow.target != null) {
+			Handles.DrawLine(fow.transform.position, fow.target.position);
 		}
 	}
 }
