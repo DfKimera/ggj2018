@@ -3428,6 +3428,11 @@ Prefab:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 114008414727953890, guid: 9cb732117ee5f4882a067cf3201b47ae,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9cb732117ee5f4882a067cf3201b47ae, type: 2}
   m_IsPrefabParent: 0
@@ -3907,7 +3912,7 @@ Prefab:
     - target: {fileID: 114008414727953890, guid: 9cb732117ee5f4882a067cf3201b47ae,
         type: 2}
       propertyPath: inputMode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1360292400421744, guid: 9cb732117ee5f4882a067cf3201b47ae, type: 2}
       propertyPath: m_Name

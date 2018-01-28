@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 	
-	const float SPEED = 50f;
-	private const int MAX_LIFETIME = 100;
+	public float speed = 50f;
+	public int maxLifetime = 100;
 
-	public TeamID team;
+	public TeamID teamID;
 	public int lifetime = 0;
+	public bool bounce = false;
 
 	public void Fire(Vector3 start, float aimX, float aimY, TeamID team) {
-		this.team = team;
+		teamID = team;
 
 		GetComponent<Rigidbody>().position = start;
-		GetComponent<Rigidbody>().velocity = new Vector3(aimX * SPEED, 0, aimY * SPEED);
+		GetComponent<Rigidbody>().velocity = (new Vector3(aimX, 0, aimY)).normalized * speed;
 		
 		GetComponent<TrailRenderer>().enabled = true;
 	}
@@ -23,18 +24,16 @@ public class Bullet : MonoBehaviour {
 	public void Update() {
 		lifetime++;
 		
-		if (lifetime > MAX_LIFETIME) {
+		if (lifetime > maxLifetime) {
 			Destroy(gameObject);
 		}
 	}
 
 	public void OnCollisionEnter(Collision collision) {
-		Debug.Log("HIT: " + collision.gameObject);
 		
-		if (collision.gameObject.CompareTag("Player") && team == TeamID.Player) {
-			return;
-		}
+		if (collision.gameObject.CompareTag("Player") && teamID == TeamID.Player) return;
+		if (collision.gameObject.CompareTag("Enemies") && teamID == TeamID.Enemy) return;
 		
-		//Destroy(gameObject);
+		if(!bounce) Destroy(gameObject);
 	}
 }

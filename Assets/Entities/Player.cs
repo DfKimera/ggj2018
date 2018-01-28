@@ -9,7 +9,7 @@ namespace Entities{
 	
 	public class Player : MonoBehaviour {
 		
-		const float SPEED_FORCE_MULTIPLIER = 250f;
+		private const float SPEED_FORCE_MULTIPLIER = 250f;
 		private const float MAX_AIRSPEED = 6f;
 
 		private Rigidbody body;
@@ -123,13 +123,13 @@ namespace Entities{
 
 			bool isTryingToMove = moveX != 0 || moveY != 0;
 
-			if (isTryingToMove && footstepsCooldown <= 0) {
-				AudioClip footstepClip = sfxFootsteps[Random.Range(0, sfxFootsteps.Length - 1)];
+			if (!isTryingToMove || footstepsCooldown > 0) return;
+			
+			AudioClip footstepClip = sfxFootsteps[Random.Range(0, sfxFootsteps.Length - 1)];
 				
-				PlaySFX(footstepClip, 0.3f);
+			PlaySFX(footstepClip, 0.3f);
 				
-				footstepsCooldown = footstepsDelay;
-			}
+			footstepsCooldown = footstepsDelay;
 		}
 
 		private void HandleAnimations() {
@@ -171,7 +171,9 @@ namespace Entities{
 			GameObject bullet = Instantiate(bulletPrefab, body.position, body.rotation);
 			Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
 
-			bullet.GetComponent<Bullet>().Fire(body.position, aimX, aimY, TeamID.Player);
+			bullet.GetComponent<Bullet>().Fire(transform.position, aimX, aimY, TeamID.Player);
+			
+			Debug.DrawRay(body.position, new Vector3(aimX, 0, aimY), Color.blue, 5);
 
 		}
 

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Entities;
 using Structs;
 using UnityEngine;
+using Utils;
 
 namespace InputSystem {
 	public class InputController : MonoBehaviour {
 		
 		public PlayerID playerID = PlayerID.Player1;
 		public InputMode inputMode = InputMode.Keyboard;
+		public Vector3 mousePosition;
 		
 		private GamepadMapping gamepad;
 		
@@ -37,6 +39,17 @@ namespace InputSystem {
 				: (GamepadMapping) new GamepadMappingOSX();
 		}
 
+		public void FixedUpdate() {
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit hit;
+
+			if (!Physics.Raycast(ray, out hit)) return;
+			
+			mousePosition = hit.point;
+			Debug.DrawRay(mousePosition, Vector3.up, Color.red);
+		}
+		
+
 		private InputMode GetInputMode() {
 			return inputMode; // TODO: load from settings
 			//return PlayerSettings.GetInputMode(playerID);
@@ -54,7 +67,7 @@ namespace InputSystem {
 		}
 
 		private float GetKeyboardAxis(string axis) {
-			return Input.GetAxis("KB_Axis" + axis);
+			return Input.GetAxis(string.Format("KB_Axis{0}", axis));
 		}
 
 		private bool WasGamepadButtonPressed(GamepadInput button) {
@@ -82,19 +95,19 @@ namespace InputSystem {
 		}
 
 		public float GetRelativeMouseAngle(Vector3 relativePos) {
-			return Vector3.Angle(Camera.main.ScreenToWorldPoint(Input.mousePosition), relativePos);
+			return (VectorUtils.GetAngleInDeg(relativePos, mousePosition) + 90);
 		}
 
 		public float GetAimX(Vector3 playerPos) {
 			return (GetInputMode() == InputMode.Gamepad)
 				? GetAxis("AimX")
-				: Mathf.Cos(GetRelativeMouseAngle(playerPos));
+			 	: Mathf.Cos(GetRelativeMouseAngle(playerPos) * Mathf.Deg2Rad);
 		}
 
 		public float GetAimY(Vector3 playerPos) {
 			return (GetInputMode() == InputMode.Gamepad)
 				? -GetAxis("AimY")
-				: Mathf.Sin(GetRelativeMouseAngle(playerPos));
+				: -Mathf.Sin(GetRelativeMouseAngle(playerPos) * Mathf.Deg2Rad);
 		}
 
 		public bool IsTryingToJump() {
