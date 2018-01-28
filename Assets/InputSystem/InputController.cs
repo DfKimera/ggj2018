@@ -52,8 +52,7 @@ namespace InputSystem {
 		
 
 		private InputMode GetInputMode() {
-			return inputMode; // TODO: load from settings
-			//return PlayerSettings.GetInputMode(playerID);
+			return PlayerSettings.GetInputMode(playerID);
 		}
 
 		private int GetPlayerGamepad() {
