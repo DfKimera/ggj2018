@@ -10,25 +10,18 @@ public class FieldOfView : MonoBehaviour {
 	public LayerMask targetMask;
 	public LayerMask obstacleMask;
 
-	private Rigidbody body;
+	protected Transform target;
 
-	[HideInInspector]
-	public Transform target;
-
-	public int initialAlertTick;
-
-	private int alertTick;
-
-	private bool isAlert;
-
-	[HideInInspector]
-	public bool targetExist;
+	protected Vector3 targetLastSeen;
+	private int AlertTick;
 
 	protected void Start() {
-		body = GetComponent<Rigidbody>();
-
 		StartCoroutine("FindTargetsWithDelay", .3f);
 	}
+
+	public Transform getTarget() { return target; }
+
+	public bool TargetExist() { return target != null; }
 	IEnumerator FindTargetsWithDelay(float delay) {
 		while(true) {
 			yield return new WaitForSeconds(delay);
@@ -37,8 +30,12 @@ public class FieldOfView : MonoBehaviour {
 		}
 	}
 
+	public Vector3 getTargetLastSeen() {
+		return targetLastSeen;
+	}
+
 	public bool targetLocked() {
-		if (!targetExist) return false;
+		if (!TargetExist()) return false;
 
 		var targetPoint = new Vector3(target.position.x, transform.position.y, target.position.z) - transform.position;
 		var targetRotation = Quaternion.LookRotation(targetPoint, Vector3.up);
@@ -47,8 +44,9 @@ public class FieldOfView : MonoBehaviour {
 	}
 
 	void FindVisibleTarget() {
+		if (TargetExist()) targetLastSeen = target.position;
+		
 		target = null;
-		targetExist = false;
 		Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
 		for (var i = 0 ; targetsInViewRadius.Length > i ; i++) {
@@ -60,8 +58,6 @@ public class FieldOfView : MonoBehaviour {
 			if (Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask)) continue;
 
 			target = _target;
-			targetExist = true;
-			
 			break;
 		}
 	}
